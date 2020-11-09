@@ -1,17 +1,13 @@
-/* eslint-disable react/prop-types */
-
-import React, { createRef } from 'react';
-import anime from 'animejs';
-import { withEnergy } from '../withEnergy';
-import { AnimationProvider } from '../AnimationProvider';
-import { Stream } from './index';
-
+```js
 const COLOR_ON = '#0f0';
 const COLOR_OFF = '#f00';
 
 const Item = withEnergy()(
   class ItemBase extends React.PureComponent {
-    element = createRef()
+    constructor () {
+      super(...arguments);
+      this.element = React.createRef();
+    }
 
     render () {
       return (
@@ -42,8 +38,12 @@ const Item = withEnergy()(
 );
 
 class Sandbox extends React.PureComponent {
-  interval = null
-  state = { activate: true }
+  constructor () {
+    super(...arguments);
+    this.interval = null;
+    this.element = React.createRef();
+    this.state = { activate: true };
+  }
 
   componentDidMount () {
     this.interval = setInterval(() => {
@@ -78,4 +78,5 @@ class Sandbox extends React.PureComponent {
   }
 }
 
-export default Sandbox;
+render(<Sandbox />);
+```

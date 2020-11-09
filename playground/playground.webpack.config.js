@@ -20,6 +20,10 @@ module.exports = {
           loader: 'babel-loader',
           options: babelConfig
         }
+      },
+      {
+        test: /\.md$/i,
+        use: 'raw-loader'
       }
     ]
   },

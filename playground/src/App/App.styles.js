@@ -1,4 +1,4 @@
-const styles = {
+const styles = theme => ({
   '@global': {
     '*, *:before, *:after': {
       boxSizing: 'border-box'
@@ -6,7 +6,7 @@ const styles = {
     'html, body': {
       margin: 0,
       padding: 0,
-      backgroundColor: '#000909'
+      backgroundColor: theme.color.background
     }
   },
 
@@ -27,10 +27,10 @@ const styles = {
     overflow: 'hidden',
     width: '100%',
     height: 40,
-    borderBottom: '1px solid #06d8d7',
-    backgroundColor: '#031214',
-    fontFamily: '"Titillium Web", sans-serif',
-    color: '#a1ecfb',
+    borderBottom: `1px solid ${theme.color.border}`,
+    backgroundColor: theme.color.section,
+    fontFamily: theme.typography.main,
+    color: theme.color.text,
     userSelect: 'none',
 
     '& a': {
@@ -47,15 +47,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'row'
   },
-  headerLogo: {
-    display: 'inline-block',
-    margin: 7,
-    width: 26,
-    height: 26
-  },
   headerTitle: {
     display: 'inline-block',
-    margin: [0, 10, 0, 0],
+    margin: [0, 12],
     lineHeight: '40px',
     fontSize: 20,
     fontWeight: 'bold'
@@ -68,18 +62,17 @@ const styles = {
   },
 
   controls: {
-    borderRight: '1px solid #06d8d7',
+    borderRight: `1px solid ${theme.color.border}`,
     padding: 10,
     width: 200,
-    backgroundColor: '#031214'
+    backgroundColor: theme.color.section
   },
 
   content: {
     flex: 1,
     position: 'relative',
-    display: 'block',
-    overflowY: 'auto',
-    padding: 20
+    display: 'flex',
+    flexDirection: 'row'
   },
 
   select: {
@@ -89,20 +82,20 @@ const styles = {
     padding: 0,
     width: '100%',
     height: 26,
-    outline: 'none',
-    boxShadow: 'none',
+    lineHeight: '26px',
+    fontSize: 14,
     cursor: 'pointer',
     backgroundColor: 'transparent',
     fontFamily: '"Titillium Web", sans-serif',
-    lineHeight: '26px',
-    fontSize: 14,
-    color: '#a1ecfb',
+    color: theme.color.text,
+    outline: 'none',
+    boxShadow: 'none',
 
     '& option, & optgroup': {
-      backgroundColor: '#031214',
-      color: '#a1ecfb'
+      backgroundColor: theme.color.section,
+      color: theme.color.text
     }
   }
-};
+});
 
 export { styles };

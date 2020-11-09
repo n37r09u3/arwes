@@ -1,13 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { ThemeProvider } from 'react-jss';
+
+import { theme } from './theme';
 import { App } from './App';
-import { useRouterControls } from './useRouterControls';
-import { playgrounds } from './playgrounds';
 
 render(
-  <App
-    useRouterControls={useRouterControls}
-    playgrounds={playgrounds}
-  />,
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
   document.querySelector('#root')
 );

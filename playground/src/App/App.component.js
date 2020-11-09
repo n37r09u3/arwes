@@ -1,25 +1,35 @@
-/* eslint-disable react/prop-types */
-
 import React from 'react';
+import {
+  LiveProvider,
+  LiveEditor,
+  LiveError,
+  LivePreview
+} from 'react-live';
 
-function Component ({ classes, useRouterControls, playgrounds }) {
-  const { controls, onControlChange } = useRouterControls();
+import { playgroundConfigs } from '../playgroundConfigs';
+import { useRouterControls } from '../useRouterControls';
+import { getSandboxFileCode } from '../getSandboxFileCode';
+import { getPackagesScope } from '../getPackagesScope';
 
-  const packagesNames = playgrounds.map(playground => playground.packageName);
-  const packageConfig = playgrounds.find(playground => playground.packageName === controls.packageName);
+function Component ({ classes }) {
+  const { controls, changeControl } = useRouterControls();
+  const onControlChange = name => event => changeControl(name, event.target.value);
 
-  let componentsNames;
+  const packagesNames = playgroundConfigs.map(playground => playground.name);
+  const packageConfig = playgroundConfigs.find(playground => playground.name === controls.packageName);
+
+  let componentsNames = [];
   let componentConfig;
   if (packageConfig) {
     const { components } = packageConfig;
-    componentsNames = components.map(component => component.componentName);
-    componentConfig = components.find(component => component.componentName === controls.componentName);
+    componentsNames = components.map(component => component.name);
+    componentConfig = components.find(component => component.name === controls.componentName);
   }
 
-  let sandboxesNames;
+  let sandboxesNames = [];
   let sandboxConfig;
   if (componentConfig) {
-    const { sandboxes } = componentConfig.playground;
+    const { sandboxes } = componentConfig;
     sandboxesNames = sandboxes.map(sandbox => sandbox.name);
     sandboxConfig = sandboxes.find(sandbox => sandbox.name === controls.sandboxName);
   }
@@ -29,7 +39,6 @@ function Component ({ classes, useRouterControls, playgrounds }) {
 
       <header className={classes.header}>
         <a className={classes.headerHeading} href='/'>
-          <img className={classes.headerLogo} src='icon.png' />
           <h1 className={classes.headerTitle}>Arwes Playground</h1>
         </a>
       </header>
@@ -41,7 +50,7 @@ function Component ({ classes, useRouterControls, playgrounds }) {
           <select
             className={classes.select}
             value={controls.packageName}
-            onChange={event => onControlChange('packageName', event.target.value)}
+            onChange={onControlChange('packageName')}
           >
             <option value=''>-- Select Package --</option>
             {packagesNames.map((packageName, index) => (
@@ -55,10 +64,10 @@ function Component ({ classes, useRouterControls, playgrounds }) {
           <select
             className={classes.select}
             value={controls.componentName}
-            onChange={event => onControlChange('componentName', event.target.value)}
+            onChange={onControlChange('componentName')}
           >
             <option value=''>-- Select Component --</option>
-            {!!componentsNames && componentsNames.map((componentName, index) =>
+            {componentsNames.map((componentName, index) =>
               <option key={index} value={componentName}>
                 {componentName}
               </option>
@@ -69,10 +78,10 @@ function Component ({ classes, useRouterControls, playgrounds }) {
           <select
             className={classes.select}
             value={controls.sandboxName}
-            onChange={event => onControlChange('sandboxName', event.target.value)}
+            onChange={onControlChange('sandboxName')}
           >
             <option value=''>-- Select Sandbox --</option>
-            {!!sandboxesNames && sandboxesNames.map((sandboxName, index) =>
+            {sandboxesNames.map((sandboxName, index) =>
               <option key={index} value={sandboxName}>{sandboxName}</option>
             )}
           </select>
@@ -80,7 +89,17 @@ function Component ({ classes, useRouterControls, playgrounds }) {
         </aside>
 
         <main className={classes.content}>
-          {!!sandboxConfig && sandboxConfig.render()}
+          {!!sandboxConfig && (
+            <LiveProvider
+              code={getSandboxFileCode(sandboxConfig.code)}
+              scope={getPackagesScope()}
+              noInline
+            >
+              <LiveEditor />
+              <LivePreview />
+              <LiveError />
+            </LiveProvider>
+          )}
         </main>
       </div>
 

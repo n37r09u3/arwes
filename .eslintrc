@@ -21,6 +21,7 @@
   },
   "rules": {
     "semi": ["error", "always"],
-    "brace-style": ["error", "stroustrup"]
+    "brace-style": ["error", "stroustrup"],
+    "react/prop-types": [0]
   }
 }

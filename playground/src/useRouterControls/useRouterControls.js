@@ -18,7 +18,7 @@ function useRouterControls () {
     setControls({ packageName, componentName, sandboxName });
   };
 
-  const onControlChange = (name, value) => {
+  const changeControl = (name, value) => {
     let controlsSideEffectChanges = {};
 
     if (name === 'packageName') {
@@ -28,7 +28,7 @@ function useRouterControls () {
       controlsSideEffectChanges = { sandboxName: '' };
     }
 
-    const newControls = { ...controls, [name]: value, ...controlsSideEffectChanges };
+    const newControls = { ...controls, ...controlsSideEffectChanges, [name]: value };
     const params = [newControls.packageName, newControls.componentName, newControls.sandboxName];
     const route = params.filter(Boolean).join('/');
 
@@ -40,7 +40,7 @@ function useRouterControls () {
     router.current.on('*', onRouteChange).resolve();
   }, []);
 
-  return { controls, onControlChange };
+  return { controls, changeControl };
 }
 
 export { useRouterControls };
